@@ -9,8 +9,6 @@ import org.bukkit.ChatColor;
 import ch.njol.skript.Skript;
 import ch.njol.skript.util.Timespan;
 import me.limeglass.ticker.Ticker;
-import sx.blah.discord.api.IDiscordClient;
-import sx.blah.discord.handle.obj.IGuild;
 
 public class Utils {
 	
@@ -43,22 +41,6 @@ public class Utils {
 			Ticker.consoleMessage("&cUnknown type " + object + " in " + clazz.getName());
 			return null;
 		}
-	}
-	
-	public static IGuild getGuild(IDiscordClient client, Object guild) {
-		if (guild instanceof IGuild) {
-			return ((IGuild)guild);
-		} else if (guild instanceof Number) {
-			Long guildID = ((Number)guild).longValue();
-			return client.getGuildByID(guildID);
-		} else {
-			for (IGuild guildName : client.getGuilds()) {
-				if (guildName.getName().equalsIgnoreCase((String)guild)) {
-					return guildName;
-				}
-			}
-		}
-		return null;
 	}
 	
 	public static Class<?> getArrayClass(Class<?> parameter){
