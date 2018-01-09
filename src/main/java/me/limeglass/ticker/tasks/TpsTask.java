@@ -1,28 +1,75 @@
 package me.limeglass.ticker.tasks;
 
+import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
+import java.text.DecimalFormat;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+
+import me.limeglass.ticker.objects.events.AverageTpsChangeEvent;
+import me.limeglass.ticker.objects.events.TpsChangeEvent;
+import me.limeglass.ticker.utils.ReflectionUtil;
 
 public class TpsTask implements Runnable {
 
 	private long millseconds = 0L;
-	private static Map<Long, Double> tpsMap = new HashMap<Long, Double>();
+	private static double lastTps, tps, lastAverageTps;
+	public static Map<Long, Double> tpsMap = new HashMap<Long, Double>();
 	
-	public static double getTps() {
+	public static double getAverageTps() {
 		double tpsSum = 0.0D;
 		for (Entry<Long, Double> pastTps : tpsMap.entrySet()) {
 			tpsSum += pastTps.getValue();
 		}
-		return Math.round(tpsSum / 10.0D * 100.0D) / 100.0D;
+		return Math.round(tpsSum / tpsMap.entrySet().size() * 100.0D) / 100.0D;
+	}
+	
+	public static String getStringAverageTps() {
+		ChatColor colour = ChatColor.GREEN;
+		if (getAverageTps() > 13.0D && getAverageTps() < 17.0D) colour = ChatColor.GOLD;
+		if (getAverageTps() < 13.0D) colour = ChatColor.RED;
+		return colour + String.valueOf(getAverageTps());
+	}
+	
+	public static double getLastTps() {
+		if (tpsMap.isEmpty()) return 0.0D;
+		return lastTps;
+	}
+	
+	public static double getTps() {
+		if (tpsMap.isEmpty()) return 0.0D;
+		return tps;
+	}
+	
+	public static String getBukkitTps() {
+		try {
+			Class<?> minecraftServer = ReflectionUtil.getNMSClass("MinecraftServer");
+			Object server = minecraftServer.getMethod("getServer", new Class[0]).invoke(null, new Object[0]);
+			Field field = server.getClass().getField("recentTps");
+			DecimalFormat format = new DecimalFormat("##.##");
+			double[] tps = null;
+			tps = (double[])field.get(server);
+			String ftps = "";
+			if (Double.compare(tps[0], 20.0D) > 0) {
+				ftps = String.valueOf(20.0D);
+			} else {
+				ftps = format.format(tps[0]);
+			}
+			return ftps;
+		} catch (ClassNotFoundException | IllegalAccessException | IllegalArgumentException | InvocationTargetException | NoSuchMethodException | SecurityException | NoSuchFieldException exception) {
+			exception.printStackTrace();
+		}
+		return null;
 	}
 
-	public static String getStringTPS() {
+	public static String getStringTps() {
 		ChatColor colour = ChatColor.GREEN;
-	    if (getTps() > 13.0D && getTps() < 17.0D) colour = ChatColor.GOLD;
-	    if (getTps() < 13.0D) colour = ChatColor.RED;
+		if (getTps() > 13.0D && getTps() < 17.0D) colour = ChatColor.GOLD;
+		if (getTps() < 13.0D) colour = ChatColor.RED;
 		return colour + String.valueOf(getTps());
 	}
 	
@@ -32,7 +79,6 @@ public class TpsTask implements Runnable {
 			if (diff < 0.0D) {
 				diff = Math.abs(diff);
 			}
-			double tps;
 			if (diff == 0.0D) {
 				tps = 20.0D;
 			} else {
@@ -41,8 +87,17 @@ public class TpsTask implements Runnable {
 			if (tps < 0.0D) {
 				tps = 0.0D;
 			}
+			if (!tpsMap.isEmpty()) {
+				if (lastTps != tps) {
+					Bukkit.getPluginManager().callEvent(new TpsChangeEvent(lastTps, tps));
+				}
+				if (lastAverageTps != getAverageTps()) {
+					Bukkit.getPluginManager().callEvent(new AverageTpsChangeEvent(lastAverageTps, getAverageTps()));
+				}
+			}
+			lastAverageTps = getAverageTps();
 			tpsMap.put(System.currentTimeMillis(), tps);
-			//call an event after running 10 or so times.
+			lastTps = tps;
 		}
 		millseconds = System.currentTimeMillis();
 	}

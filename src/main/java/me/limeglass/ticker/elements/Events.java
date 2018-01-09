@@ -5,7 +5,10 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 import org.bukkit.event.Event;
+import org.eclipse.jdt.annotation.Nullable;
+
 import ch.njol.skript.Skript;
+import ch.njol.skript.lang.SkriptEvent;
 import ch.njol.skript.lang.util.SimpleEvent;
 import ch.njol.skript.registrations.EventValues;
 import me.limeglass.ticker.Ticker;
@@ -17,7 +20,8 @@ public class Events {
 	public Events() {
 	}
 	
-	public static void registerEvent(Class<? extends Event> event, String... patterns) {
+	public static void registerEvent(@Nullable Class<? extends SkriptEvent> skriptEvent, Class<? extends Event> event, String... patterns) {
+		if (skriptEvent == null) skriptEvent = SimpleEvent.class;
 		for (int i = 0; i < patterns.length; i++) {
 			patterns[i] = Ticker.getNameplate() + patterns[i];
 		}
@@ -31,7 +35,7 @@ public class Events {
 		Syntax.save();
 		if (Ticker.getSyntaxData().getBoolean("Syntax.Events." + event.getSimpleName() + ".enabled", true)) {
 			//TODO find a way to make the stupid Spigot Yaml read properly for user editing of event patterns.
-			Skript.registerEvent(event.getSimpleName(), SimpleEvent.class, event, patterns);
+			Skript.registerEvent(event.getSimpleName(), skriptEvent, event, patterns);
 		}
 	}
 	

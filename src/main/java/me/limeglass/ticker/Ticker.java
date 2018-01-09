@@ -25,14 +25,15 @@ public class Ticker extends JavaPlugin {
 	private final int interval = 20;
 	private static Ticker instance;
 	private static FileConfiguration syntaxData;
-	private static String packageName = "me.limeglass.diskcord";
-	private static String prefix = "&8[&5Diskcord&8] &d";
-	private static String nameplate = "[Diskcord] ";
+	private static String packageName = "me.limeglass.ticker";
+	private static String prefix = "&8[&eTicker&8] &6";
+	private static String nameplate = "[Ticker] ";
 	
 	public void onEnable(){
 		addonInstance = Skript.registerAddon(this).setLanguageFileDirectory("lang");
 		instance = this;
-		Bukkit.getScheduler().scheduleSyncRepeatingTask(instance, new TpsTask(), 120L, interval); //Start after 120 ticks when the server has caught up from startup.
+		long time = (config.getBoolean("ServerStartupQueue", true)) ? 130L : 1L;
+		Bukkit.getScheduler().scheduleSyncRepeatingTask(instance, new TpsTask(), time, interval);
 		File file = new File(getDataFolder(), "config.yml");
 		syntaxFile = new File(getDataFolder(), "Syntax.yml");
 		if (!Objects.equals(getDescription().getVersion(), config.getString("version"))) {

@@ -7,6 +7,7 @@ import java.util.List;
 import org.bukkit.event.Event;
 import java.lang.reflect.ParameterizedType;
 
+import ch.njol.skript.ScriptLoader;
 import ch.njol.skript.classes.Changer;
 import ch.njol.skript.lang.Expression;
 import ch.njol.skript.lang.SkriptParser.ParseResult;
@@ -19,6 +20,7 @@ import me.limeglass.ticker.utils.Utils;
 import me.limeglass.ticker.utils.annotations.AllChangers;
 import me.limeglass.ticker.utils.annotations.Changers;
 import me.limeglass.ticker.utils.annotations.DetermineSingle;
+import me.limeglass.ticker.utils.annotations.Events;
 import me.limeglass.ticker.utils.annotations.Multiple;
 import me.limeglass.ticker.utils.annotations.Settable;
 import me.limeglass.ticker.utils.annotations.Single;
@@ -56,6 +58,12 @@ public abstract class TickerExpression<T> extends SimpleExpression<T> implements
 
 	@Override
 	public boolean init(Expression<?>[] expressions, int matchedPattern, Kleenean isDelayed, ParseResult parser) {
+		if (getClass().isAnnotationPresent(Events.class)) {
+			if (!ScriptLoader.isCurrentEvent(getClass().getAnnotation(Events.class).value())) {
+				Ticker.debugMessage("The expression `" + getClass().getSimpleName() + "` can't be used in the event: " + ScriptLoader.getCurrentEventName());
+				return false;
+			}
+		}
 		if (expressions != null && getSyntax() != null) this.expressions = new ExpressionData(expressions, getSyntax()[0]);
 		this.patternMark = parser.mark;
 		this.parser = parser;

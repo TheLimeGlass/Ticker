@@ -11,15 +11,15 @@ import me.limeglass.ticker.utils.annotations.ExpressionProperty;
 import me.limeglass.ticker.utils.annotations.Patterns;
 import me.limeglass.ticker.utils.annotations.Single;
 
-@Name("Tps String")
-@Description("Returns the server's tps with colour.")
-@Patterns("[the] [server[[']s]] tps string")
+@Name("Tps")
+@Description("Returns the server's tps.")
+@Patterns("[the] [server[[']s]] tps")
 @ExpressionProperty(ExpressionType.SIMPLE)
 @Single
-public class ExprTpsString extends TickerExpression<String> {
+public class ExprTps extends TickerExpression<Number> {
 	
 	@Override
-	protected String[] get(Event event) {
-		return new String[] {TpsTask.getStringTps()};
+	protected Number[] get(Event event) {
+		return new Number[] {TpsTask.getTps()};
 	}
 }

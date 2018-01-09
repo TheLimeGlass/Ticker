@@ -9,6 +9,11 @@ debug: false
 # Broadcast all the syntax that didn't register to the console.
 NotRegisteredSyntax: false
 
+# Should Ticker wait a few seconds before starting the server tracking progress.
+# The server typically lags when it first starts up due to all the plugin loading.
+# This makes the average tps more accurate.
+ServerStartupQueue: true
+
 # Converts the Enum's into proper english enums like `FADE_TYPE` will be `fade type` or `fading type`
 #as defined in the english.lang of the jar. (Which can be edited, they parent aliases parsing)
 UseEnglishEnums: true
