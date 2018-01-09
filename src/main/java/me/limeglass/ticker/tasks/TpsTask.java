@@ -4,22 +4,14 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-
-import me.limeglass.ticker.Ticker;
 
 public class TpsTask implements Runnable {
 
-	private final int interval = 20;
 	private long millseconds = 0L;
-	private Map<Long, Double> tpsMap = new HashMap<Long, Double>();
+	private static Map<Long, Double> tpsMap = new HashMap<Long, Double>();
 	
-	protected int startTask(Ticker instance) {
-		return Bukkit.getScheduler().scheduleSyncRepeatingTask(instance, this, 120L, interval);
-	}
-	
-	public double getTps() {
+	public static double getTps() {
 		double tpsSum = 0.0D;
 		for (Entry<Long, Double> pastTps : tpsMap.entrySet()) {
 			tpsSum += pastTps.getValue();
@@ -27,7 +19,7 @@ public class TpsTask implements Runnable {
 		return Math.round(tpsSum / 10.0D * 100.0D) / 100.0D;
 	}
 
-	public String getStringTPS() {
+	public static String getStringTPS() {
 		ChatColor colour = ChatColor.GREEN;
 	    if (getTps() > 13.0D && getTps() < 17.0D) colour = ChatColor.GOLD;
 	    if (getTps() < 13.0D) colour = ChatColor.RED;

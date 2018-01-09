@@ -13,15 +13,17 @@ import org.bukkit.plugin.java.JavaPlugin;
 import ch.njol.skript.Skript;
 import ch.njol.skript.SkriptAddon;
 import me.limeglass.ticker.elements.Register;
+import me.limeglass.ticker.tasks.TpsTask;
 import me.limeglass.ticker.utils.Utils;
 
 public class Ticker extends JavaPlugin {
 	
-	private Metrics metrics;
-	private SkriptAddon addonInstance;
-	private static Ticker instance;
 	public FileConfiguration config = getConfig();
 	public static File syntaxFile;
+	private Metrics metrics;
+	private SkriptAddon addonInstance;
+	private final int interval = 20;
+	private static Ticker instance;
 	private static FileConfiguration syntaxData;
 	private static String packageName = "me.limeglass.diskcord";
 	private static String prefix = "&8[&5Diskcord&8] &d";
@@ -30,6 +32,7 @@ public class Ticker extends JavaPlugin {
 	public void onEnable(){
 		addonInstance = Skript.registerAddon(this).setLanguageFileDirectory("lang");
 		instance = this;
+		Bukkit.getScheduler().scheduleSyncRepeatingTask(instance, new TpsTask(), 120L, interval); //Start after 120 ticks when the server has caught up from startup.
 		File file = new File(getDataFolder(), "config.yml");
 		syntaxFile = new File(getDataFolder(), "Syntax.yml");
 		if (!Objects.equals(getDescription().getVersion(), config.getString("version"))) {
