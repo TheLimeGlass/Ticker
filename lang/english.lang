@@ -1,0 +1,40 @@
+version: 1.0.0
+
+# Note: @an makes the pattern allow for `an`.
+
+# Diskord types
+types:
+	discordpermission: discord permissions, discord permission, discord perm, perm, permission
+
+# The permissions that a discord user can have.
+discordpermission:
+	add_reactions: add reactions, reactions
+	administrator: admin, administrator
+	attach_files: attach files, files
+	ban: ban
+	change_nickname: change nickname, nickname
+	create_invite: create invite, invite, invites, invitations, invitation
+	embed_links: embed links
+	kick: kick
+	manage_channel: manage channel
+	manage_channels: manage channels
+	manage_emojis: manage emojis, emojis
+	manage_messages: manage messages, messages
+	manage_nicknames: manage nicknames
+	manage_permissions: manage permissions, permissions
+	manage_roles: manage roles, roles
+	manage_server: manage server
+	manage_webhooks: manage webhooks
+	mention_everyone: mention everyone, everyone
+	read_message_history: read message history, message history, read history
+	read_messages: read messages
+	send_messages: send messages
+	send_tts_messages: send tts messages, tts
+	use_external_emojis: use external emojis, external emojis
+	view_audit_log: view audit log, audit log, log
+	voice_connect: voice connect, connect
+	voice_deafen_members: voice deafen members, deafen members
+	voice_move_members: voice move members, move members
+	voice_mute_members: voice mute members, mute members
+	voice_speak: voice speak, speak
+	voice_use_VAD: voice use vad, use vad, vad, use voice activity detection, voice activity detection, voice detection

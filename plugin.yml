@@ -1,0 +1,6 @@
+name: Ticker
+author: LimeGlass
+description: Tps logistics for Skript.
+version: 1.0.0
+main: me.limeglass.ticker.Ticker
+depend: [Skript]

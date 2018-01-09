@@ -1,0 +1,24 @@
+
+apply plugin: 'java-library'
+
+repositories {
+    mavenCentral()
+    jcenter()
+    maven {
+        url 'https://hub.spigotmc.org/nexus/content/repositories/snapshots/'
+    }
+    maven {
+        url "https://raw.githubusercontent.com/bensku/mvn-repo/master"
+    }
+}
+
+dependencies {
+    
+    //Skript
+    api (group: 'ch.njol', name: 'Skript', version: '2.2-dev26') {
+        transitive = false
+	}
+	
+	//Spigot/Bukkit
+	compile (group: 'org.spigotmc', name: 'spigot-api', version: '1.12.2-R0.1-SNAPSHOT')
+}
