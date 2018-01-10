@@ -56,7 +56,7 @@ public abstract class TickerPropertyExpression<F, T> extends PropertyExpression<
 		String modSyntax = Syntax.isModified(getClass()) ? "Modified syntax: " + Arrays.toString(getSyntax()) : Arrays.toString(getSyntax());
 		if (expressions != null && event != null) for (Expression<?> expression : expressions.getExpressions()) values.add(expression.getSingle(event));
 		if (event != null) Ticker.debugMessage(getClass().getSimpleName() + " - " + modSyntax + " (" + event.getEventName() + ")" + " Data: " + Arrays.toString(values.toArray()));
-		return Ticker.getNameplate() + getClass().getSimpleName() + ": the " + getPropertyName() + " of " + getExpr().toString(event, debug);
+		return Ticker.getNameplate() + getClass().getSimpleName() + ": the " + getPropertyName() + " (of|from) " + getExpr().toString(event, debug);
 	}
 	
 	@Override

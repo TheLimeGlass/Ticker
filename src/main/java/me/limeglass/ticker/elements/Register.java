@@ -66,7 +66,7 @@ public class Register {
 						if (var == 1) input1 = properties[2].substring(3, properties[2].length());
 						else input2 = properties[2].substring(3, properties[2].length());
 					}
-					String[] values = new String[]{input1 + " " + properties[1] + " of" + additions + "%" + properties[0] + "%", input2 + "%" + properties[0] + "%['s]"  + additions.replace("[the] ", "") + properties[1]};
+					String[] values = new String[]{input1 + " " + properties[1] + " (of|from)" + additions + "%" + properties[0] + "%", input2 + "%" + properties[0] + "%['s]"  + additions.replace("[the] ", "") + properties[1]};
 					syntax = Syntax.register(clazz, values);
 					if (syntax == null) Ticker.debugMessage("&cThere was an issue registering the syntax for " + clazz.getName());
 				} else {

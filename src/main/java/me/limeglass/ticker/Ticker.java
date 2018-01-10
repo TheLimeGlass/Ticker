@@ -13,7 +13,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import ch.njol.skript.Skript;
 import ch.njol.skript.SkriptAddon;
 import me.limeglass.ticker.elements.Register;
-import me.limeglass.ticker.tasks.TpsTask;
+import me.limeglass.ticker.tasks.TpsHandler;
 import me.limeglass.ticker.utils.Utils;
 
 public class Ticker extends JavaPlugin {
@@ -33,7 +33,7 @@ public class Ticker extends JavaPlugin {
 		addonInstance = Skript.registerAddon(this).setLanguageFileDirectory("lang");
 		instance = this;
 		long time = (config.getBoolean("ServerStartupQueue", true)) ? 130L : 1L;
-		Bukkit.getScheduler().scheduleSyncRepeatingTask(instance, new TpsTask(), time, interval);
+		Bukkit.getScheduler().scheduleSyncRepeatingTask(instance, new TpsHandler(), time, interval);
 		File file = new File(getDataFolder(), "config.yml");
 		syntaxFile = new File(getDataFolder(), "Syntax.yml");
 		if (!Objects.equals(getDescription().getVersion(), config.getString("version"))) {

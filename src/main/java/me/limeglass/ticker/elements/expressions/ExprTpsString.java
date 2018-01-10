@@ -6,7 +6,7 @@ import ch.njol.skript.doc.Description;
 import ch.njol.skript.doc.Name;
 import ch.njol.skript.lang.ExpressionType;
 import me.limeglass.ticker.lang.TickerExpression;
-import me.limeglass.ticker.tasks.TpsTask;
+import me.limeglass.ticker.tasks.TpsHandler;
 import me.limeglass.ticker.utils.annotations.ExpressionProperty;
 import me.limeglass.ticker.utils.annotations.Patterns;
 import me.limeglass.ticker.utils.annotations.Single;
@@ -20,6 +20,6 @@ public class ExprTpsString extends TickerExpression<String> {
 	
 	@Override
 	protected String[] get(Event event) {
-		return new String[] {TpsTask.getStringTps()};
+		return new String[] {TpsHandler.getStringTps()};
 	}
 }

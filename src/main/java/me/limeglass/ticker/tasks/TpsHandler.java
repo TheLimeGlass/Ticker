@@ -10,11 +10,12 @@ import java.util.Map.Entry;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 
+import me.limeglass.ticker.Ticker;
 import me.limeglass.ticker.objects.events.AverageTpsChangeEvent;
 import me.limeglass.ticker.objects.events.TpsChangeEvent;
 import me.limeglass.ticker.utils.ReflectionUtil;
 
-public class TpsTask implements Runnable {
+public class TpsHandler implements Runnable {
 
 	private long millseconds = 0L;
 	private static double lastTps, tps, lastAverageTps;
@@ -45,6 +46,17 @@ public class TpsTask implements Runnable {
 		return tps;
 	}
 	
+	public static double getTpsNear(long timestamp) {
+		double tps = 0.0D;
+		for (Entry<Long, Double> entry : tpsMap.entrySet()) {
+			long calculate = timestamp - entry.getKey();
+			if (calculate >= 0 && calculate < 2000) {
+				tps = entry.getValue();
+			}
+		}
+		return tps;
+	}
+	
 	public static String getBukkitTps() {
 		try {
 			Class<?> minecraftServer = ReflectionUtil.getNMSClass("MinecraftServer");
@@ -61,6 +73,7 @@ public class TpsTask implements Runnable {
 			}
 			return ftps;
 		} catch (ClassNotFoundException | IllegalAccessException | IllegalArgumentException | InvocationTargetException | NoSuchMethodException | SecurityException | NoSuchFieldException exception) {
+			Ticker.consoleMessage("The recentTps field doesn't exist for your version. Please refrain from using the Bukkit tps expression.");
 			exception.printStackTrace();
 		}
 		return null;
